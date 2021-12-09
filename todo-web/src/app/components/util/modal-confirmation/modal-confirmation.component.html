@@ -1,0 +1,21 @@
+<ng-template #confirmationModal role="document" let-modal>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="confirmationModalModalTitle">{{title}}</h5>
+            <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body scrollable-container">
+            <p>{{message}}</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" style="background-color: #1f1a33; color: white" (click)="modal.dismiss()">
+                No
+            </button>
+            <button type="submit" class="btn btn-primary" style="background-color: #1f1a33; color: white" (click)="onClick(true)">
+                Yes
+            </button>
+        </div>
+    </div>
+</ng-template>
