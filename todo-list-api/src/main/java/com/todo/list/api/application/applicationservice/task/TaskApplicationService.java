@@ -1,7 +1,7 @@
-package com.todo.list.api.infrastructure.applicationservice.task;
+package com.todo.list.api.application.applicationservice.task;
 
 import com.todo.list.api.domain.model.task.Task;
-import com.todo.list.api.infrastructure.dto.task.TaskDTO;
+import com.todo.list.api.application.dto.task.TaskDTO;
 import com.todo.list.api.infrastructure.util.ResponseObject;
 
 public interface TaskApplicationService {
