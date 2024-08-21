@@ -3,19 +3,20 @@ import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Rout
 import { Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 import { environment } from 'src/environments/environment';
+import { AuthService } from '../services/auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
 
-  constructor(private cookieService : CookieService, private router : Router) {}
+  constructor(private cookieService : CookieService
+    , private router : Router
+    , private authService: AuthService) {}
   
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+  canActivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     const cookie = this.cookieService.check(environment.AUTHORIZATION_HEADER)
-    if(cookie){
+    if(cookie && this.authService.isAuthenticated()){
       return true;
     }
     else{
