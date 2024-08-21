@@ -13,4 +13,5 @@ export class JwtParseService {
   parseJWT(): string[]{
     return JSON.parse(atob(this.cookieService.get(environment.AUTHORIZATION_HEADER).split('.')[1]));
   }
+  
 }

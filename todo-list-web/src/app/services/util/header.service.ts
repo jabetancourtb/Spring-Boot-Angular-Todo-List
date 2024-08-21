@@ -20,5 +20,5 @@ export class HeadersService {
       'Accept': 'application/json'
     })}
     
-  constructor(private cookieService : CookieService) { }
+  constructor(private cookieService : CookieService) {}
 }

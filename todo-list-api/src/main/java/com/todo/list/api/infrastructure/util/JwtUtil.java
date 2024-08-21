@@ -55,6 +55,8 @@ public class JwtUtil {
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", user.getId());
         claims.put("fullname", user.getFullName());
+        claims.put("enabled", user.isEnabled());
+        claims.put("verificationCode", user.getVerificationCode());
         return doGenerateToken(claims, user.getEmail());
     }
 

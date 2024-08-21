@@ -3,6 +3,7 @@ export class TaskModel {
     id: number;
     title: string;
     description: string;
+    date: Date;
     userId: number;
 
     constructor() {}
@@ -17,6 +18,10 @@ export class TaskModel {
 
     public getDescription(): string {
         return this.description;
+    }
+
+    public getDate(): Date {
+        return this.date;
     }
 
     public getUserId(): number {

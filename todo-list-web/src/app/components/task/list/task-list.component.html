@@ -1,106 +1,78 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">Menú</a>
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Profile
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <div class="dropdown-divider"></div>
-              <button class="dropdown-item" (click)="logout()">Log Out</button>
+<app-navbar></app-navbar>
+
+<div class="container text-center" style="margin-top: 1%;">
+
+    <label class="navbar-brand" style="margin-top: 2%;">TODO LIST</label>
+
+    <div class="row mt-3">
+        <div class="col-md-4">
+            <div>
+                <button class="btn btn-sm btn-block" style="background-color: #1f1a33; color: white; width: 125px" (click)="openAddNewTaskModal()">
+                    New Task
+                </button>
             </div>
-          </li>
-      </ul>
-  </div>
-</nav>
-
-
-<div class="container text-center" style="padding-top: 4%;">
-  
-  <h3 class="mb-3">
-      Todo list
-  </h3>
-
-  <div class="row mt-3">
-    <!-- <div class="col-md-1"></div> -->
-    <div class="col-md-4">
-      <div>
-        <button class="btn btn-sm btn-block" 
-            style="background-color: #1f1a33; color: white; width: 125px"
-            (click)="openAddNewTaskModal()">
-            New Task
-        </button>
-      </div>
+        </div>
+        <div class="col-md-4">
+            <strong>{{jwtData['fullname']}}</strong>
+        </div>
+        <div class="col-md-4">
+            <br />
+            <app-task-filter (filter)="getTaskByFilter($event)"></app-task-filter>
+        </div>
     </div>
-    <div class="col-md-4">
-      <strong>{{jwtData['fullname']}}</strong>
-    </div>
-    <div class="col-md-4">
-      <br />
-      <app-task-filter (filter)="getTaskByFilter($event)"></app-task-filter>
-    </div>
-  </div>
-  <br>
+    <br>
 
-  <div class="row">
-      <table class="table table-hover table-hover table-bordered" *ngIf="tasks.length != 0">
-          <thead class="thead-light">
-            <tr>
-              <th style="width: 8%;" scope="col">#</th>
-              <th style="width: 30%;" scope="col">Title</th>
-              <th style="width: 50%;" scope="col">Description</th>
-              <th style="width: 12%;" scope="col">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let task of tasks | paginate: configPagination;">
-              <td>{{task.id}}</td>
-              <td>{{task.title}}</td>
-              <td>{{task.description}}</td>
-              <td>
-                <a ngbPopover="Edit task" triggers="mouseenter:mouseleave">
-                  <button style="color:#1f1a33;" type="button" class="btn btn-link btn-sm"
-                          (click)="openUpdateTaskModal(task)">
+    <div class="row">
+        <table class="table table-hover table-hover table-bordered" *ngIf="tasks.length != 0">
+            <thead class="thead-light">
+                <tr>
+                    <th style="width: 8%;" scope="col">#</th>
+                    <th style="width: 20%;" scope="col">Title</th>
+                    <th style="width: 50%;" scope="col">Description</th>
+                    <th style="width: 12%;" scope="col">Date</th>
+                    <th style="width: 10%;" scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let task of tasks | paginate: configPagination;">
+                    <td>{{task.id}}</td>
+                    <td>{{task.title}}</td>
+                    <td>{{task.description}}</td>
+                    <td>{{task.date | date}}</td>
+                    <td>
+                        <a ngbPopover="Edit task" triggers="mouseenter:mouseleave">
+                            <button style="color:#1f1a33;" type="button" class="btn btn-link btn-sm" (click)="openUpdateTaskModal(task)">
                     <i class="material-icons">edit</i>
                   </button>
-                </a>
-                <a ngbPopover="Remove task" triggers="mouseenter:mouseleave">
-                  <button style="color:red;" type="button" class="btn btn-link btn-sm" 
-                          (click)="showRemoveModalConfirmation(task)">
+                        </a>
+                        <a ngbPopover="Remove task" triggers="mouseenter:mouseleave">
+                            <button style="color:red;" type="button" class="btn btn-link btn-sm" (click)="showRemoveModalConfirmation(task)">
                     <i class="material-icons">delete</i>
                   </button>
-                </a>
-              </td>
-            </tr>
-          </tbody>
-      </table>
-      <div *ngIf="tasks.length == 0">
-          No tasks
-      </div>
-  </div>
-
-  <!--Pagination -->
-  <div class="row">
-    <div class="col-md-4"></div>
-    <div class="col-md-6 text-center">
-      <nav aria-label="pagination example">
-        <ul class="pagination pagination-circle pg-blue mb-0">
-          <pagination-controls maxSize="10"
-                               autoHide="true"
-                               previousLabel="Previous"
-                               nextLabel="Next"
-                               id="tasks"
-                               (pageChange)="pageChanged($event)">
-          </pagination-controls>
-        </ul>
-      </nav>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div *ngIf="tasks.length == 0">
+            No tasks
+        </div>
     </div>
-    <div class="col-md-2"></div>
-  </div>
-   
+
+    <!--Pagination -->
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-6 text-center">
+            <nav aria-label="pagination example">
+                <ul class="pagination pagination-circle pg-blue mb-0">
+                    <pagination-controls maxSize="10" autoHide="true" previousLabel="Previous" nextLabel="Next" id="tasks" (pageChange)="pageChanged($event)">
+                    </pagination-controls>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+
 </div>
 
 <app-task-create [userId]="jwtData['id']" (newItemEvent)="newTaskAdded()"></app-task-create>

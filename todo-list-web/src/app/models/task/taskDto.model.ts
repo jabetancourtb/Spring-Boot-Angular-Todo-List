@@ -3,6 +3,7 @@ export class TaskDTO {
     id: number;
     title: string;
     description: string;
+    date: Date;
     userId: number;
 
     constructor(id: number, title: string, description: string, userId: number) {
@@ -22,6 +23,10 @@ export class TaskDTO {
 
     public getDescription(): string {
         return this.description;
+    }
+
+    public getDate(): Date {
+        return this.date;
     }
 
     public getUserId(): number {

@@ -1,0 +1,11 @@
+<div class="container text-center" style="max-width:350px;  padding-top: 7%;">
+    <p *ngIf="sucessfulVerification">
+        Hello {{user.fullName}}, your confirmation has been successful. You can now login into todo list app.
+        <br>
+        <a [routerLink]="[ '/', 'login' ]">Login</a>
+    </p>
+
+    <p *ngIf="!sucessfulVerification" style="color: red">
+        Something happened with your confirmation
+    </p>
+</div>

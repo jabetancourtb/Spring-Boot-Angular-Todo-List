@@ -4,12 +4,16 @@ export class UserModel {
     email: string;
     password: string;
     fullName: string;
+    enabled: boolean;
+    verificationCode: string;
 
-    constructor(id: number, email: string, password: string, fullName: string) {
+    constructor(id: number, email: string, password: string, fullName: string, enabled: boolean, verificationCode: string) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.fullName = fullName;
+        this.enabled = enabled;
+        this.verificationCode = verificationCode;
     }
 
     public getId(): number {
@@ -26,5 +30,13 @@ export class UserModel {
 
     public getFullName(): string {
         return this.fullName;
+    }
+
+    public isEnabled(): boolean {
+        return this.enabled;
+    }
+
+    public getVerificationCode(): string {
+        return this.verificationCode;
     }
 }

@@ -16,7 +16,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail'
 	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+	implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.0'
+		
 	runtimeOnly 'org.postgresql:postgresql'
 	//compile group: 'org.springframework', name: 'spring-jdbc', version: '5.2.2.RELEASE'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

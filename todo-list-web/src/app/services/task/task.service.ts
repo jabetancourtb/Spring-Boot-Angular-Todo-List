@@ -1,8 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { environment } from "src/environments/environment";
-import { TaskModel } from "src/app/models/task/task.model";
 import { HeadersService } from "../util/header.service";
 import { TaskDTO } from "src/app/models/task/taskDto.model";
 import { ResponseModel } from "src/app/models/response/response.model";
@@ -54,7 +53,7 @@ export class TaskService {
     }
 
     deleteTask(id: number) : Observable<boolean> {
-        let apiUrl : string = environment.API_URL_DEVELOPMENT + '/task' + id;
+        let apiUrl : string = environment.API_URL_DEVELOPMENT + '/task/' + id;
         return this.http.delete<boolean>(apiUrl, this.headersService.authorizationHeader);
     }
 }

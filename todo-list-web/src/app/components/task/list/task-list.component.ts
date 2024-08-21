@@ -38,25 +38,21 @@ export class TaskListComponent implements OnInit {
   };
 
   constructor(private taskService: TaskService
-    , private userService: UserService
     , private jwtParseService: JwtParseService
-    , private toastr: ToastrService
-    , private route: ActivatedRoute
-    , private router: Router) { }
+    , private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.jwtData = this.jwtParseService.parseJWT();
     this.getTasksByUserId(this.itemsToSkip);
   }
 
-  public pageChanged(page) : void
-  {
+  public pageChanged(page) : void {
     this.configPagination.currentPage = page;
     this.itemsToSkip = environment.PAGINATION.TASK.ITEMS_PER_PAGE * (page-1);
     this.getTasksByUserId(this.itemsToSkip);
   }
 
-  public getTasksByUserId(itemsToSkip: number) : void{
+  public getTasksByUserId(itemsToSkip: number) : void {
     let promise = this.taskService.getTasksByUserId(this.jwtData['id'], environment.PAGINATION.TASK.ITEMS_PER_PAGE, itemsToSkip);
 
     promise.then(data => {
@@ -69,7 +65,7 @@ export class TaskListComponent implements OnInit {
     })
   }
 
-  public getTasksByFilterAndUserId(taskDto: TaskDTO, itemsToSkip: number) : void{
+  public getTasksByFilterAndUserId(taskDto: TaskDTO, itemsToSkip: number) : void {
     let promise = this.taskService.getTasksByFilterAndUserId(taskDto, environment.PAGINATION.TASK.ITEMS_PER_PAGE, itemsToSkip);
 
     promise.then(data => {
@@ -83,8 +79,12 @@ export class TaskListComponent implements OnInit {
   }
 
   public getTaskByFilter(taskDto: TaskDTO): void {
-    taskDto.userId = this.jwtData['id'];
-    this.getTasksByFilterAndUserId(taskDto, this.itemsToSkip);
+    if(taskDto == null || taskDto == undefined) {
+      this.getTasksByUserId(this.itemsToSkip);
+    }
+    else {
+      this.getTasksByFilterAndUserId(taskDto, this.itemsToSkip);
+    }
   }
 
   public openAddNewTaskModal(): void {
@@ -126,8 +126,4 @@ export class TaskListComponent implements OnInit {
     });
   }
 
-  public logout(): void {
-    this.userService.logout();
-    this.router.navigateByUrl('/login');
-  }
 }

@@ -1,0 +1,18 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand">TODO LIST APP</a>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Menú
+              </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" [routerLink]="[ '/', 'profile' ]" routerLinkActive="active">Profile</a>
+                    <a class="dropdown-item" [routerLink]="[ '/', 'tasks' ]" routerLinkActive="active">Todo List</a>
+                    <div class="dropdown-divider"></div>
+                    <button class="dropdown-item" (click)="logout()">Log Out</button>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
