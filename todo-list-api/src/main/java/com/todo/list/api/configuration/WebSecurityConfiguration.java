@@ -29,7 +29,12 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
     	 http.cors().and().csrf().disable()
-         .authorizeRequests().antMatchers("/user/**").permitAll()
+         .authorizeRequests().antMatchers("/user/{email}/{password}"
+						 , "/user/sign-up"
+						 , "/user/get-user-by-verification-code/{verificationCode}"
+						 , "/user/update-verification-code/{userId}/{verificationCode}"
+						 , "/user/update-state/{userId}/{state}"
+						 , "/user-password-recovery/**").permitAll()
          .anyRequest().authenticated()
          .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     	 
