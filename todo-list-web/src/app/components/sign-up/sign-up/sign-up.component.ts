@@ -24,7 +24,6 @@ export class SignUpComponent implements OnInit {
 
   constructor(private userService: UserService
     , private toastr: ToastrService
-    , private route: ActivatedRoute
     , private router: Router) { }
 
   ngOnInit(): void {
@@ -40,19 +39,23 @@ export class SignUpComponent implements OnInit {
   }
 
   public signUp() {
-    const userDto = new UserDTO(this.userForm.get('email').value, this.userForm.get('password').value, this.userForm.get('fullName').value)
-    this.userService.signUp(userDto)
-    .subscribe(res => {
-      this.user = res;
-      this.toastr.success('The user has been registered');
+    this.toastr.success('The email has been sent, it may take a few minutes to send, please check your inbox if not check your spam.');
+    const userDto = new UserDTO(-1, this.userForm.get('email').value, this.userForm.get('password').value, this.userForm.get('fullName').value, false, null)
+    this.userService.signUp(userDto).subscribe(res => {
+        this.user = res;
+      },
+      err => {
+        this.toastr.error(err.error);
+      }
+    );
 
-      setTimeout(() => {
-        this.router.navigate(['/login']);
-      }, 2000);
-    });
+    setTimeout(() => {
+      this.router.navigate(['/login']);
+    }, 500);
   }
 
-  public goToLogin(): void {
+  public goToLogIn(): void {
     this.router.navigateByUrl('/login');
-}
+  }
+  
 }
