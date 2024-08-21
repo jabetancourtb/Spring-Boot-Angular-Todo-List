@@ -17,7 +17,7 @@ import java.util.function.Function;
 @Service
 public class JwtUtil {
 
-    public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
+    public static final long        JWT_TOKEN_VALIDITY = 5 * 60 * 60;
 
     private String secretKey = "Bearer ";
 
@@ -63,9 +63,9 @@ public class JwtUtil {
     //1. Define  claims of the token, like Issuer, Expiration, Subject, and the ID
     //2. Sign the JWT using the HS512 algorithm and secret key.
     private String doGenerateToken(Map<String, Object> claims, String subject) {
-        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
-                .signWith(SignatureAlgorithm.HS512, secretKey).compact();
+    	return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
+            .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
+            .signWith(SignatureAlgorithm.HS512, secretKey).compact();  
     }
 
 
