@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.todo.list.api.domain.model.task.Task;
-import com.todo.list.api.infrastructure.applicationservice.task.TaskApplicationService;
-import com.todo.list.api.infrastructure.dto.task.TaskDTO;
+import com.todo.list.api.application.applicationservice.task.TaskApplicationService;
+import com.todo.list.api.application.dto.task.TaskDTO;
 import com.todo.list.api.infrastructure.util.ResponseObject;
 
 @RestController
@@ -64,28 +64,34 @@ public class TaskController {
 	}
 	
 	@GetMapping(value = "/getByUserId/{userId}/{limit}/{itemsToSkip}") 
-	public ResponseEntity<ResponseObject<Task>> getByUserId(@PathVariable("userId") final long userId
+	public ResponseEntity<?> getByUserId(@PathVariable("userId") final long userId
 			, @PathVariable("limit") final long limit
 			, @PathVariable("itemsToSkip") final long itemsToSkip) {
 		ResponseObject<Task> taskList = taskService.getByUserId(userId, limit, itemsToSkip);
 		try {
 			return new ResponseEntity<>(taskList, HttpStatus.OK);
 		}
-		catch(NoSuchElementException e) {
-			return new ResponseEntity<>(taskList, HttpStatus.NOT_FOUND);
+		catch(NoSuchElementException noSuchElementException) {
+			return new ResponseEntity<>(noSuchElementException, HttpStatus.NOT_FOUND);
+		}
+		catch(Exception exception) {
+			return new ResponseEntity<>(exception, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	
 	@PostMapping(value = "/getByFilterAndUserId/{limit}/{itemsToSkip}") 
-	public ResponseEntity<ResponseObject<Task>> getByFilterAndUserId(@RequestBody final TaskDTO taskDto
+	public ResponseEntity<?> getByFilterAndUserId(@RequestBody final TaskDTO taskDto
 			, @PathVariable("limit") final long limit
 			, @PathVariable("itemsToSkip") final long itemsToSkip) {
 		ResponseObject<Task> taskList = taskService.getByFilterAndUserId(taskDto, limit, itemsToSkip);
 		try {
 			return new ResponseEntity<>(taskList, HttpStatus.OK);
 		}
-		catch(NoSuchElementException e) {
-			return new ResponseEntity<>(taskList, HttpStatus.NOT_FOUND);
+		catch(NoSuchElementException noSuchElementException) {
+			return new ResponseEntity<>(noSuchElementException, HttpStatus.NOT_FOUND);
+		}
+		catch(Exception exception) {
+			return new ResponseEntity<>(exception, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 }

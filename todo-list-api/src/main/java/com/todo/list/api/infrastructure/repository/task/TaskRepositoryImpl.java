@@ -1,5 +1,7 @@
 package com.todo.list.api.infrastructure.repository.task;
 
+import java.util.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +27,19 @@ public class TaskRepositoryImpl implements TaskRepository{
 
 	@Override
 	public boolean create(Task task) {
-		String query = "INSERT INTO Task(title, description, user_id) VALUES(?, ?, ?)";
-		int rowsUpdated = jdbcTemplate.update(query, task.getTitle(), task.getDescription(), task.getUserId());
+		String query = "INSERT INTO Task(title, description, date, user_id) VALUES(?, ?, ?, ?)";
+		Date date = new Date();
+		Timestamp timestamp = new Timestamp(date.getTime());
+		int rowsUpdated = jdbcTemplate.update(query, task.getTitle(), task.getDescription(), timestamp, task.getUserId());
 		return rowsUpdated > 0;
 	}
 
 	@Override
 	public boolean update(Task task) {
-		String query = "UPDATE Task SET title = ?, description = ? WHERE id = ?";
-		int rowsUpdated = jdbcTemplate.update(query, task.getTitle(), task.getDescription(), task.getId());
+		String query = "UPDATE Task SET title = ?, description = ?, date = ? WHERE id = ?";
+		Date date = new Date();
+		Timestamp timestamp = new Timestamp(date.getTime());
+		int rowsUpdated = jdbcTemplate.update(query, task.getTitle(), task.getDescription(), timestamp, task.getId());
 		return rowsUpdated > 0;
 	}
 
@@ -47,7 +53,7 @@ public class TaskRepositoryImpl implements TaskRepository{
 	@SuppressWarnings("deprecation")
 	@Override
 	public ResponseObject<Task> getByUserId(final long userId, final long limit, final long itemsToSkip) {
-		String queryContent = "SELECT id, title, description FROM Task WHERE user_id = ? ORDER BY id LIMIT ? OFFSET ?";
+		String queryContent = "SELECT id, title, description, date FROM Task WHERE user_id = ? ORDER BY id LIMIT ? OFFSET ?";
 		List<Task> tasks = null;
 		
 		String queryTotalItems = "SELECT COUNT(*) FROM Task WHERE user_id = ?";
@@ -58,7 +64,8 @@ public class TaskRepositoryImpl implements TaskRepository{
 				final long id = resultSet.getLong("id");
 				final String title = resultSet.getString("title");
 				final String description = resultSet.getString("description");
-				return new Task(id, title, description, userId);
+				final Timestamp date = resultSet.getTimestamp("date");
+				return new Task(id, title, description, date, userId);
 			});
 			
 			totalItems = jdbcTemplate.queryForObject(queryTotalItems, new Object[]{userId}, Integer.class);
@@ -73,20 +80,20 @@ public class TaskRepositoryImpl implements TaskRepository{
 	@Override
 	public ResponseObject<Task> getByFilterAndUserId(final Task taskFilter, final long limit, final long itemsToSkip) {
 		
-		String idFromFilter = null;
+		int idFromFilter = 0;
 		String titleFromFilter = null;
 		String descriptionFromFilter = null;
 		
 		if(taskFilter.getId() > 0){
-			idFromFilter = String.valueOf(taskFilter.getId());
+			idFromFilter = (int) taskFilter.getId();
 		}
 		
-		if(taskFilter.getTitle() != null) {
-			titleFromFilter = "%" + taskFilter.getTitle() + "%";
+		if(taskFilter.getTitle() != null && taskFilter.getTitle() != "") {
+			titleFromFilter = "%" + taskFilter.getTitle().toLowerCase() + "%";
 		}
 		
-		if(taskFilter.getDescription() != null) {
-			descriptionFromFilter = "%" + taskFilter.getDescription() + "%";
+		if(taskFilter.getDescription() != null && taskFilter.getDescription() != "") {
+			descriptionFromFilter = "%" + taskFilter.getDescription().toLowerCase() + "%";
 		}
 	
 		MapSqlParameterSource mapParameters = new MapSqlParameterSource();
@@ -99,7 +106,7 @@ public class TaskRepositoryImpl implements TaskRepository{
 		mapParameters.addValue("offset", itemsToSkip);
 		
 		StringBuilder queryContent = new StringBuilder();
-		queryContent.append(" SELECT id, title, description ");
+		queryContent.append(" SELECT id, title, description, date ");
 		queryContent.append(" FROM Task ");
 		queryContent.append(" WHERE user_id = :userId ");
 		queryContent.append(" AND ");
@@ -132,7 +139,8 @@ public class TaskRepositoryImpl implements TaskRepository{
 				final long id = resultSet.getLong("id");
 				final String title = resultSet.getString("title");
 				final String description = resultSet.getString("description");
-				return new Task(id, title, description, taskFilter.getUserId());
+				final Timestamp date = resultSet.getTimestamp("date");
+				return new Task(id, title, description, date, taskFilter.getUserId());
 			});
 			
 			totalItems = namedParameterJdbcTemplate.queryForObject(queryTotalItems.toString(), mapParameters, Integer.class);
