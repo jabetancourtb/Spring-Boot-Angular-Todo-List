@@ -1,11 +1,17 @@
-
 <div class="container text-center" style="max-width:350px;  padding-top: 7%;">
-    <form class="navbar-form" [formGroup]="loginForm" (ngSubmit)="login()"> 
-        <input type="email" placeholder="Email" formControlName="email" max-length="256" class="form-control"/>
-        <input type="password" placeholder="Password" formControlName="password" max-length="256" class="form-control"/>
+    <form class="navbar-form" [formGroup]="loginForm" (ngSubmit)="login()">
+        <input type="email" placeholder="Email" formControlName="email" max-length="256" class="form-control" />
+        <input type="password" placeholder="Password" formControlName="password" max-length="256" class="form-control" />
         <br>
-        <button class="btn btn-lg btn-block" style="background-color: #1f1a33; color: white">Enter</button>
+        <button class="btn btn-lg btn-block" style="background-color: #1f1a33; color: white">Log In</button>
+        <div style="margin-top: 7%;">
+            <a [routerLink]="[ '/', 'recovery-password' ]">
+                Forgot password?
+            </a>
+        </div>
     </form>
     <br>
-    <button class="btn btn-lg btn-block" style="background-color: #1f1a33; color: white" (click)="goToSignUp()">Sign Up</button>
+    <button class="btn btn-lg btn-block" style="background-color: #53c943; color: white; width: 60%; margin-left: 20%;" (click)="goToSignUp()">
+        Sign Up
+    </button>
 </div>
