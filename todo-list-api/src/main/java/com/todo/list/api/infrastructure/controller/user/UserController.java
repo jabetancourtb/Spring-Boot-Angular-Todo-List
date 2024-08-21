@@ -49,6 +49,10 @@ public class UserController {
 		} 
 		catch(NoSuchElementException e) {
 			return new ResponseEntity<>(new JwtDTO(token), HttpStatus.UNAUTHORIZED); 
-		}		
+		}
+		catch (Exception exception) {
+			System.out.println(exception);
+			return new ResponseEntity<>(new JwtDTO(token), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 }
