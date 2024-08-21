@@ -1,0 +1,28 @@
+SELECT id, title, description, date
+FROM Task
+WHERE user_id = 1
+AND
+(
+ id = 1
+ OR title LIKE null
+ OR description LIKE null
+)
+ORDER BY id LIMIT 10 OFFSET 0
+
+
+
+select * from users;
+
+select * from task; 
+
+select * from email;
+
+select * from users_password_recovery;
+
+
+update users set enabled = true where id = 41; 
+
+delete from email;
+delete from task;
+delete from users;
+delete from users_password_recovery;
